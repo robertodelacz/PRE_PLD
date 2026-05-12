@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Fuentes corporativas: Montserrat (Títulos) e Inter (Textos) -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* ── Paleta Institucional ── */
+      --primary: #35B7C5;      /* Cyan Institucional */
+      --bg-card: #364494;      /* Azul Institucional */
+      --text-dim: #B2B2B2;     /* Gris Institucional */
+      
+      /* Colores de apoyo */
+      --bg-dark: #1a224a;      /* Azul marino muy oscuro para el fondo */
+      --bg-input: #232d61;     /* Tono intermedio para inputs */
+      --text-main: #ffffff;    /* Blanco */
+      --border-dark: #0d122b;  /* Azul casi negro para sombras sólidas */
+      
+      /* Elementos estructurales (Neo-brutalismo) */
+      --border-width: 3px;
+      --shadow-solid: 6px 6px 0px var(--primary);
+      --shadow-solid-dark: 4px 4px 0px var(--border-dark);
+      --radius: 12px;
+      --transition: 0.15s ease-out;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    /* ── Background ── */
+    .bg-video {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .bg-video video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+        }
+
+    .bg-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, transparent 0%, rgba(26, 34, 74, 0.95) 100%);
+      z-index: 0;
+    }
+
+    .app-container {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 50px 24px;
+    }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo-container {
+      background: #eaeaea;
+      padding: 5px 20px; 
+      border-radius: 12px;
+      width: fit-content; 
+      margin: 0 auto 24px auto;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      display: block; 
+    }
+
+    .header-logo {
+      width: 180px; /* Mantenemos el tamaño que te gustó */
+      height: auto; 
+      display: block;
+    }
+
+    .header h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 32px;
+      color: var(--primary);
+      letter-spacing: 1px;
+      text-shadow: 2px 2px 0px var(--border-dark);
+      margin-bottom: 12px;
+    }
+
+    .header p {
+      color: var(--text-main);
+      font-size: 14px;
+      font-weight: 600;
+      background: var(--border-dark);
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--primary);
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--bg-card);
+      border: var(--border-width) solid var(--primary);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: 8px 8px 0px rgba(0,0,0,0.5);
+      transition: transform var(--transition);
+    }
+
+    .card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 10px 10px 0px rgba(0,0,0,0.6);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      border-bottom: 2px dashed rgba(53, 183, 197, 0.4);
+      padding-bottom: 16px;
+    }
+    .icon-box {
+      width: 44px;
+      height: 44px;
+      background: var(--primary);
+      border: 2px solid var(--border-dark);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 3px 3px 0px var(--border-dark);
+      flex-shrink: 0;
+    }
+
+    .icon-img {
+      width: 24px; 
+      height: 24px;
+      object-fit: contain; 
+    }
+
+
+    .card-header h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 20px;
+      color: #ffffff;
+      text-shadow: 1px 1px 0px var(--border-dark);
+    }
+
+    .card-header .subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: var(--text-dim);
+      display: block;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    /* ── Forms ── */
+    .field-group { margin-bottom: 20px; }
+    .field-group:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .input-text {
+      width: 100%;
+      background: var(--bg-input);
+      border: 2px solid var(--text-dim);
+      border-radius: 8px;
+      padding: 14px 16px;
+      color: white;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .input-text:focus {
+      outline: none;
+      background: var(--bg-dark);
+      border-color: var(--primary);
+      box-shadow: 4px 4px 0px rgba(53, 183, 197, 0.3);
+      transform: translate(-2px, -2px);
+    }
+
+    /* ── Controles ── */
+    .regime-toggle {
+      display: flex;
+      gap: 12px;
+    }
+
+    .regime-btn {
+      flex: 1;
+      border: 2px solid var(--text-dim);
+      background: var(--bg-input);
+      padding: 12px 16px;
+      border-radius: 8px;
+      color: var(--text-dim);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.1s;
+    }
+
+    .regime-btn:hover {
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .regime-btn.active {
+      background: var(--primary);
+      border-color: var(--border-dark);
+      color: var(--border-dark);
+      box-shadow: 3px 3px 0px var(--border-dark);
+      transform: translate(-1px, -1px);
+    }
+
+    .stepper {
+      display: flex;
+      align-items: center;
+      background: var(--bg-input);
+      border: 2px solid var(--text-dim);
+      border-radius: 8px;
+      width: fit-content;
+      overflow: hidden;
+    }
+
+    .stepper-btn {
+      width: 48px;
+      height: 44px;
+      border: none;
+      background: transparent;
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+
+    .stepper-btn:hover { background: var(--primary); color: #000; }
+
+    .stepper-value {
+      width: 60px;
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 20px;
+      border-left: 2px solid var(--text-dim);
+      border-right: 2px solid var(--text-dim);
+      padding: 8px 0;
+      color: var(--primary);
+    }
+
+    /* ── Tags y Notas (Acceso y Protección) ── */
+    .email-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .email-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-input);
+      border: 1px solid var(--text-dim);
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .email-chip .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 5px var(--primary);
+    }
+
+    .info-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+      border-radius: 8px;
+      background: rgba(53, 183, 197, 0.1);
+      border-left: 4px solid var(--primary);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-main);
+      margin-top: 20px;
+      line-height: 1.5;
+    }
+
+    .info-note .icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    /* ── Botón Principal ── */
+    .btn-main {
+      width: 100%;
+      padding: 16px;
+      background: var(--primary);
+      border: var(--border-width) solid var(--border-dark);
+      border-radius: 10px;
+      color: var(--border-dark);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 22px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.1s;
+      box-shadow: var(--shadow-solid-dark);
+      margin-top: 10px;
+    }
+
+    .btn-main:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px var(--border-dark);
+      background: #4de0f0;
+    }
+
+    .btn-main:active { 
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px var(--border-dark);
+    }
+
+    .btn-main:disabled {
+      background: var(--text-dim);
+      border-color: var(--bg-input);
+      color: var(--bg-dark);
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ── Resumen ── */
+    .preview-summary {
+      background: var(--bg-card);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 24px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .preview-stat span {
+      display: block;
+      font-size: 11px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .preview-stat strong {
+      font-size: 15px;
+      color: var(--primary);
+      font-family: 'Inter', sans-serif;
+    }
+
+/* ── Status ── */
+    .status {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 700;
+      border: var(--border-width) solid var(--border-dark);
+      display: none;
+      box-shadow: var(--shadow-solid-dark); /* Le añadimos la sombra sólida para que combine con el botón */
+    }
+
+    /* Fondo Cyan institucional, texto oscuro */
+    .status.loading { 
+      display: block; 
+      background: var(--primary); 
+      color: var(--border-dark); 
+    }
+    
+    /* Fondo Verde sólido, texto blanco */
+    .status.success { 
+      display: block; 
+      background: #10b981; 
+      color: #ffffff; 
+    }
+    
+    /* Fondo Rojo sólido, texto blanco */
+    .status.error { 
+      display: block; 
+      background: #ef4444; 
+      color: #ffffff; 
+    }
+    
+    .status a {
+      color: #ffffff;
+      background: var(--border-dark);
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      border: 2px solid transparent;
+      margin-top: 10px;
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      transition: all 0.15s ease-out;
+    }
+
+    .status a:hover {
+      background: #ffffff;
+      color: var(--border-dark);
+      border-color: var(--border-dark);
+    }
+
+    /* ── Animación Reloj Trabajando ── */
+    .clock-spinner {
+      position: relative;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid var(--border-dark);
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+    
+    .clock-spinner::before,
+    .clock-spinner::after {
+      content: '';
+      position: absolute;
+      background-color: var(--border-dark);
+      bottom: 50%;
+      left: 50%;
+      transform-origin: bottom center;
+      border-radius: 2px;
+    }
+    
+    /* Manecilla de los minutos (rápida) */
+    .clock-spinner::before {
+      width: 2.5px;
+      height: 7px;
+      margin-left: -1.25px;
+      animation: spin 0.8s linear infinite;
+    }
+    
+    /* Manecilla de las horas (lenta) */
+    .clock-spinner::after {
+      width: 2.5px;
+      height: 4px;
+      margin-left: -1.25px;
+      animation: spin 4s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ── Botón Nueva Operación ── */
+    .btn-reset {
+      background: #364494;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: 700;
+      margin-top: 10px;
+      margin-left: 10px;
+      transition: all 0.2s;
+    }
+    
+    .btn-reset:hover {
+      background: #ffffff;
+      color: #35B7C5; 
+    }
+     </style>
+</head>
+<body>
+
+<div class="bg-video">
+  <video autoplay muted loop playsinline>
+    <source src="https://videos.pexels.com/video-files/31737798/13522392_2560_1440_30fps.mp4" type="video/mp4">
+  </video>
+</div>
+<div class="bg-overlay"></div>
+
+<div class="app-container">
+  <header class="header">
+    <div class="logo-container">
+      <img src="https://drive.google.com/thumbnail?id=1jS_6nXoN7oBQCJqHN6Os9vtxnV82s9_f&sz=w1000" alt="Financiera Cualli" class="header-logo">
+       </div>
+    <h1>Generador Pre-Aviso PLD</h1>
+    <p>Operativa Institucional y Cumplimiento</p>
+  </header>
+
+  <!-- Card: Operación -->
+  <div class="card">
+    <div class="card-header">
+      <div class="icon-box">
+        <img src="https://cdn-icons-png.flaticon.com/512/6014/6014206.png " alt="Operación" class="icon-img">
+      </div>
+      <div>
+        <h2>Datos de la Operación</h2>
+        <span class="subtitle">Nombre de la operación y asociados responsables</span>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Nombre de la Operación</label>
+      <input type="text" class="input-text" id="txtOperacion" placeholder="Ej: Venta Lote 14 Col. Del Valle">
+    </div>
+    <div class="field-group">
+      <label>Asociado Responsable - Vendedor-Lado 1</label>
+      <input type="text" class="input-text" id="txtAsocLado1" placeholder="Nombre del asociado Lado 1">
+    </div>
+    <div class="field-group">
+      <label>Asociado Responsable - Comprador-Lado 2</label>
+      <input type="text" class="input-text" id="txtAsocLado2" placeholder="Nombre del asociado Lado 2">
+    </div>
+  </div>
+
+  <!-- Card: Vendedor -->
+  <div class="card">
+    <div class="card-header">
+      <div class="icon-box">
+           <img src="https://cdn-icons-png.flaticon.com/512/4757/4757347.png" alt="Venta" class="icon-img">
+      </div>
+      <div>
+        <h2>Vendedor (Lado 1)</h2>
+        <span class="subtitle">Régimen y cantidad de vendedores</span>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Régimen del Vendedor</label>
+      <div class="regime-toggle">
+        <button class="regime-btn active" onclick="setRegime('vendedor','PF',this)">Persona Física</button>
+        <button class="regime-btn" onclick="setRegime('vendedor','PM',this)">Persona Moral</button>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Cantidad de Vendedores</label>
+      <div class="stepper">
+        <button class="stepper-btn" onclick="adjustCount('vendedor',-1)">−</button>
+        <div class="stepper-value" id="countVendedor">1</div>
+        <button class="stepper-btn" onclick="adjustCount('vendedor',1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card: Comprador -->
+  <div class="card">
+    <div class="card-header">
+      <div class="icon-box">
+           <img src="https://cdn-icons-png.magnific.com/512/5764/5764035.png?ga=GA1.1.1372457637.1778013504" alt="Venta" class="icon-img">
+      </div>
+      <div>
+        <h2>Comprador (Lado 2)</h2>
+        <span class="subtitle">Régimen y cantidad de compradores</span>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Régimen del Comprador</label>
+      <div class="regime-toggle">
+        <button class="regime-btn active" onclick="setRegime('comprador','PF',this)">Persona Física</button>
+        <button class="regime-btn" onclick="setRegime('comprador','PM',this)">Persona Moral</button>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Cantidad de Compradores</label>
+      <div class="stepper">
+        <button class="stepper-btn" onclick="adjustCount('comprador',-1)">−</button>
+        <div class="stepper-value" id="countComprador">1</div>
+        <button class="stepper-btn" onclick="adjustCount('comprador',1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card: Pagos -->
+  <div class="card">
+    <div class="card-header">
+      <div class="icon-box">
+           <img src="https://cdn-icons-png.magnific.com/512/4523/4523470.png?ga=GA1.1.1372457637.1778013504" alt="Venta" class="icon-img">
+      </div>
+      <div>
+        <h2>Pagos / Liquidación</h2>
+        <span class="subtitle">Cantidad de pagos o anticipos de la operación</span>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Número de Pagos</label>
+      <div class="stepper">
+        <button class="stepper-btn" onclick="adjustCount('pagos',-1)">−</button>
+        <div class="stepper-value" id="countPagos">1</div>
+        <button class="stepper-btn" onclick="adjustCount('pagos',1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card: Compartir -->
+  <div class="card">
+    <div class="card-header">
+      <div class="icon-box">
+           <img src="https://cdn-icons-png.magnific.com/512/1069/1069900.png?ga=GA1.1.1372457637.1778013504" alt="Venta" class="icon-img">
+      </div>
+      <div>
+        <h2>Acceso y Protección</h2>
+        <span class="subtitle">El archivo se compartirá automáticamente con:</span>
+      </div>
+    </div>
+    <div class="email-chips">
+      <div class="email-chip"><span class="dot"></span> oficialdecumplimiento@cualli.mx</div>
+      <div class="email-chip"><span class="dot"></span> carinagarcia@cualli.mx</div>
+      <div class="email-chip"><span class="dot"></span> carlosluna@cualli.mx</div>
+    </div>
+    <div class="info-note">
+      <span class="icon">ℹ️</span>
+      <span>El archivo se generará con protecciones: los títulos, secciones y menús no podrán ser modificados. Solo las celdas de captura estarán habilitadas para edición.</span>
+    </div>
+  </div>
+
+  <!-- Preview Summary -->
+  <div class="preview-summary">
+    <div class="preview-stat">
+      <span>Vendedor (L1)</span>
+      <strong id="prevVendedor">1 Persona Física</strong>
+    </div>
+    <div class="preview-stat">
+      <span>Comprador (L2)</span>
+      <strong id="prevComprador">1 Persona Física</strong>
+    </div>
+    <div class="preview-stat">
+      <span>Total Pagos</span>
+      <strong id="prevPagos">1</strong>
+    </div>
+    <div class="preview-stat">
+      <span>Bloques a Generar</span>
+      <strong id="prevSecciones">6 Bloques</strong>
+    </div>
+  </div>
+
+  <button class="btn-main" id="btnGenerar" onclick="generarPreAviso()">
+    GENERAR PRE-AVISO PLD
+  </button>
+
+  <div id="statusMsg" class="status"></div>
+</div>
+
+<script>
+  // Lógica funcional de la interfaz a Apps Script
+  var config = {
+    vendedorRegimen: 'PF',
+    vendedorCount: 1,
+    compradorRegimen: 'PF',
+    compradorCount: 1,
+    pagosCount: 1
+  };
+
+
+  function setRegime(side, regime, btn) {
+    var buttons = btn.parentElement.querySelectorAll('.regime-btn');
+    buttons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (side === 'vendedor') config.vendedorRegimen = regime;
+    else config.compradorRegimen = regime;
+    updatePreview();
+  }
+
+  function adjustCount(field, delta) {
+    var minVal = 1;
+    var maxVal = (field === 'pagos') ? 10 : 20;
+    var key = field + 'Count';
+    config[key] = Math.max(minVal, Math.min(maxVal, config[key] + delta));
+    document.getElementById('count' + capitalize(field)).textContent = config[key];
+    updatePreview();
+  }
+
+  function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  function updatePreview() {
+    var regLabel = { 'PF': 'Persona Física', 'PM': 'Persona Moral' };
+    document.getElementById('prevVendedor').textContent = config.vendedorCount + ' ' + regLabel[config.vendedorRegimen];
+    document.getElementById('prevComprador').textContent = config.compradorCount + ' ' + regLabel[config.compradorRegimen];
+    document.getElementById('prevPagos').textContent = config.pagosCount;
+    var secciones = config.vendedorCount + config.compradorCount + config.pagosCount + 3;
+    document.getElementById('prevSecciones').textContent = secciones + ' Bloques';
+  }
+
+  // ── Resetear Formulario para Nueva Operación ──
+  function resetForm() {
+    // 1. Limpiar textos
+    document.getElementById('txtOperacion').value = '';
+    document.getElementById('txtAsocLado1').value = '';
+    document.getElementById('txtAsocLado2').value = '';
+    
+    // 2. Reiniciar valores a la configuración inicial
+    config.vendedorRegimen = 'PF';
+    config.vendedorCount = 1;
+    config.compradorRegimen = 'PF';
+    config.compradorCount = 1;
+    config.pagosCount = 1;
+
+    // 3. Restaurar los botones visuales (Regímenes)
+    var botonesRegimen = document.querySelectorAll('.regime-btn');
+    botonesRegimen.forEach(b => b.classList.remove('active'));
+    
+    // Seleccionar automáticamente "Persona Física" (el primer botón de cada grupo)
+    var gruposToggle = document.querySelectorAll('.regime-toggle');
+    gruposToggle.forEach(grupo => {
+      grupo.querySelector('.regime-btn').classList.add('active');
+    });
+
+    // 4. Restaurar contadores en pantalla
+    document.getElementById('countVendedor').textContent = 1;
+    document.getElementById('countComprador').textContent = 1;
+    document.getElementById('countPagos').textContent = 1;
+
+    // 5. Actualizar el cuadro de "Bloques a Generar"
+    updatePreview();
+    
+    // 6. Ocultar el cuadro de éxito verde
+    var elStatus = document.getElementById('statusMsg');
+    elStatus.style.display = 'none';
+    elStatus.className = 'status'; // Lo limpia de las clases error/success
+    
+    // Devolvemos el display vacío tras unos milisegundos para que funcione en la siguiente carga
+    setTimeout(() => { elStatus.style.display = ''; }, 50); 
+  }
+
+function generarPreAviso() {
+    var operacion = document.getElementById('txtOperacion').value.trim();
+    var asocL1 = document.getElementById('txtAsocLado1').value.trim();
+    var asocL2 = document.getElementById('txtAsocLado2').value.trim();
+
+    // ── NUEVA VALIDACIÓN ESTRICTA: LOS 3 CAMPOS SON OBLIGATORIOS ──
+    if (!operacion || !asocL1 || !asocL2) {
+      showStatus('error', '⚠️ FALTA INFORMACIÓN: Debes llenar el nombre de la operación y ambos asociados responsables para continuar.');
+      return;
+    }
+    // ──────────────────────────────────────────────────────────────
+    
+    showStatus('loading', '<div class="clock-spinner"></div> PROCESANDO: Generando archivo protegido...');
+    document.getElementById('btnGenerar').disabled = true;
+
+    if (typeof google !== 'undefined' && google.script) {
+      google.script.run
+        .withSuccessHandler(function(res) {
+          document.getElementById('btnGenerar').disabled = false;
+          if (res.success) {
+            showStatus('success', 
+              '✅ ¡LISTO! Documento generado correctamente.<br>' + 
+              '<a href="'+res.url+'" target="_blank">ABRIR PRE-AVISO PLD</a>' + 
+              '<button onclick="resetForm()" class="btn-reset">NUEVA OPERACIÓN</button>'
+            );
+          } else {
+            showStatus('error', '💥 ERROR: ' + res.message);
+          }
+        })
+
+        .withFailureHandler(function(err) {
+          document.getElementById('btnGenerar').disabled = false;
+          showStatus('error', '💥 ERROR CRÍTICO: ' + err.message);
+        })
+        .generarPreAvisoPLD({
+          operacion: operacion,
+          asociadoLado1: asocL1, // Ahora usa la variable validada
+          asociadoLado2: asocL2, // Ahora usa la variable validada
+          ...config
+        });
+    } else {
+      setTimeout(() => {
+        document.getElementById('btnGenerar').disabled = false;
+        showStatus('error', '💥 ENTORNO LOCAL: Script requiere ejecución desde Google Workspace.');
+      }, 1500);
+    }
+  }
+
+  function showStatus(type, html) {
+    var el = document.getElementById('statusMsg');
+    el.className = 'status ' + type;
+    el.innerHTML = html;
+  }
+
+  updatePreview();
+</script>
+</body>
+</html>
